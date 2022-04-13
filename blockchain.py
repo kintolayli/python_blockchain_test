@@ -10,8 +10,8 @@ from flask import Flask, jsonify, request
 
 class Blockchain:
     def __init__(self):
-        self.current_transactions = []
         self.chain = []
+        self.current_transactions = []
         self.nodes = set()
 
         # Создание блока генезиса
@@ -58,11 +58,6 @@ class Blockchain:
 
         return self.last_block['index'] + 1
 
-    @property
-    def last_block(self):
-        # Возвращает последний блок в цепочке
-        return self.chain[-1]
-
     @staticmethod
     def hash(block):
         """
@@ -74,6 +69,11 @@ class Blockchain:
 
         block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
+
+    @property
+    def last_block(self):
+        # Возвращает последний блок в цепочке
+        return self.chain[-1]
 
     def proof_of_work(self, last_proof):
         """
@@ -94,7 +94,8 @@ class Blockchain:
     @staticmethod
     def valid_proof(last_proof, proof):
         """
-        Подтверждение доказательства: Содержит ли hash(last_proof, proof) 4 заглавных нуля?
+        Подтверждение доказательства:
+        Содержит ли hash(last_proof, proof) 4 заглавных нуля?
 
         :param last_proof: <int> Предыдущее доказательство
         :param proof: <int> Текущее доказательство
@@ -229,7 +230,7 @@ def new_transaction():
     index = blockchain.new_transaction(values['sender'], values['recipient'],
                                        values['amount'])
 
-    response = {'message': f'Transaction will be adde to Block {index}'}
+    response = {'message': f'Transaction will be added to Block {index}'}
     return jsonify(response), 201
 
 
